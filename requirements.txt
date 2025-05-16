@@ -7,3 +7,4 @@ pycryptodome
 pymongo[srv]
 yfinance
 bs4
+dotenv

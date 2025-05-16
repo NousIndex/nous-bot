@@ -9,9 +9,15 @@ from telegram.ext import (
 from pymongo import MongoClient
 import ast
 import os
+from dotenv import load_dotenv
 
+# Load variables from .env file
+load_dotenv()
+
+# Now you can access them
 BOT_TOKEN = os.getenv("TELE_TOKEN")
 MONGODB_URI = os.getenv("MONGODB")
+
 
 client = MongoClient(MONGODB_URI)
 db = client["NousBot"]
@@ -22,7 +28,7 @@ collection2 = db["UserConfig"]
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("ToTo", callback_data="toto")],
-        [InlineKeyboardButton("Dividend", callback_data="dividend")],
+        # [InlineKeyboardButton("Dividend", callback_data="dividend")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Choose an option:", reply_markup=reply_markup)
@@ -35,7 +41,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def reminder(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("ToTo", callback_data="toto")],
-        [InlineKeyboardButton("Dividend", callback_data="dividend")],
+        # [InlineKeyboardButton("Dividend", callback_data="dividend")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Choose an option:", reply_markup=reply_markup)
@@ -76,7 +82,6 @@ async def button_handler(update: Update, context: CallbackContext):
     query = update.callback_query
     await query.answer()
     data = query.data
-    print(query)
     keyboard1 = [
         [InlineKeyboardButton("✅ Subscribe", callback_data="subscribe_toto_yes")],
     ]

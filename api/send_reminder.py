@@ -2,7 +2,6 @@ import os
 import telegram
 from fastapi import FastAPI, Request
 from pytz import timezone
-from datetime import datetime, timedelta
 from Crypto.Cipher import AES
 import hashlib
 import base64
@@ -10,6 +9,7 @@ from pymongo import MongoClient
 import yfinance as yf
 import requests
 from bs4 import BeautifulSoup
+import ast
 
 app = FastAPI()
 
@@ -32,6 +32,11 @@ def aes_decrypt(encrypted_text, key):
     cipher = AES.new(key, AES.MODE_ECB)
     decrypted_text = cipher.decrypt(base64.b64decode(encrypted_text)).decode()
     return decrypted_text[: -ord(decrypted_text[-1])]
+
+
+async def get_subscriptions(field_name):
+    doc = collection.find_one({field_name: {"$exists": True}})
+    return doc.get(field_name) if doc else "[]"
 
 
 async def toto_reminder():
@@ -67,26 +72,14 @@ async def toto_reminder():
 
     # Send final message
     final_message = "\n".join(message_parts)
-    await bot.send_message(chat_id=CHAT_ID2, text=final_message, parse_mode="HTML")
+    list = ast.literal_eval(await get_subscriptions("toto_reminder"))
+    for chat_uid in list:
+        await bot.send_message(chat_id=chat_uid, text=final_message, parse_mode="HTML")
 
 
 @app.get("/")
 def home():
     return {"status": "Bot is running!"}
-
-
-@app.get("/send_reminder_work")
-async def manual_trigger(request: Request):
-    headers = dict(request.headers)
-    # print(headers)
-    try:
-        if aes_decrypt(headers["auth_key"], AUTH_KEY) == KEY_WORD:
-            await send_reminder2()
-        else:
-            print("FAILED")
-    except:
-        print("FAILED EXCEPT")
-    return {"message": "Reminder sent!"}
 
 
 @app.get("/toto_reminder")

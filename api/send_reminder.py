@@ -72,6 +72,7 @@ async def toto_reminder():
     final_message = "\n".join(message_parts)
     list = ast.literal_eval(await get_subscriptions("toto_reminder"))
     for chat_uid in list:
+        print(f"Sending message to {chat_uid}")
         await bot.send_message(
             chat_id=int(chat_uid), text=final_message, parse_mode="HTML"
         )

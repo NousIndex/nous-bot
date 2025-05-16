@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-telegram-bot
+apscheduler
+pytz
+pycryptodome
+pymongo[srv]
+yfinance
+bs4

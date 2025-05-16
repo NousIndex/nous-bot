@@ -36,6 +36,7 @@ def aes_decrypt(encrypted_text, key):
 
 async def get_subscriptions(field_name):
     doc = collection.find_one({field_name: {"$exists": True}})
+    print(doc)
     return doc.get(field_name) if doc else "[]"
 
 
@@ -71,6 +72,7 @@ async def toto_reminder():
     # Send final message
     final_message = "\n".join(message_parts)
     list = ast.literal_eval(await get_subscriptions("toto_reminder"))
+    print(list)
     for chat_uid in list:
         print(f"Sending message to {chat_uid}")
         await bot.send_message(

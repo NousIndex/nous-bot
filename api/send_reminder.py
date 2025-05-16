@@ -53,8 +53,6 @@ async def toto_reminder():
     draw_date_div = soup.find("div", class_="toto-draw-date")
     draw_date = draw_date_div.text.strip() if draw_date_div else "N/A"
 
-    print("Next Jackpot:", jackpot_amount)
-    print("Next Draw:", draw_date)
     # Build message
     message_parts = ["<b>ToTo Reminder:</b>"]
 
@@ -74,7 +72,9 @@ async def toto_reminder():
     final_message = "\n".join(message_parts)
     list = ast.literal_eval(await get_subscriptions("toto_reminder"))
     for chat_uid in list:
-        await bot.send_message(chat_id=chat_uid, text=final_message, parse_mode="HTML")
+        await bot.send_message(
+            chat_id=int(chat_uid), text=final_message, parse_mode="HTML"
+        )
 
 
 @app.get("/")

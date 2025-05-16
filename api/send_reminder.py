@@ -19,9 +19,9 @@ KEY_WORD = os.getenv("KEY_WORD")
 MONGODB_URI = os.getenv("MONGODB")
 
 client = MongoClient(MONGODB_URI)
-db = client["BadmintonBookie"]
-collection = db["DeleteMessages"]
-collection2 = db["BookedCourts"]
+db = client["NousBot"]
+collection = db["Subscriptions"]
+collection2 = db["UserConfig"]
 
 sg_timezone = timezone("Asia/Singapore")
 bot = telegram.Bot(token=TOKEN)
@@ -36,7 +36,6 @@ def aes_decrypt(encrypted_text, key):
 
 async def get_subscriptions(field_name):
     doc = collection.find_one({field_name: {"$exists": True}})
-    print(doc)
     return doc.get(field_name) if doc else "[]"
 
 
@@ -72,9 +71,7 @@ async def toto_reminder():
     # Send final message
     final_message = "\n".join(message_parts)
     list = ast.literal_eval(await get_subscriptions("toto_reminder"))
-    print(list)
     for chat_uid in list:
-        print(f"Sending message to {chat_uid}")
         await bot.send_message(
             chat_id=int(chat_uid), text=final_message, parse_mode="HTML"
         )

@@ -34,7 +34,7 @@ def aes_decrypt(encrypted_text, key):
     return decrypted_text[: -ord(decrypted_text[-1])]
 
 
-async def get_subscriptions(field_name):    
+async def get_subscriptions(field_name):
     doc = collection.find_one({field_name: {"$exists": True}})
     return doc.get(field_name) if doc else "[]"
 
@@ -57,7 +57,7 @@ async def toto_reminder():
     message_parts = ["<b>ToTo Reminder:</b>"]
 
     if jackpot_amount:
-        if int(jackpot_amount) < 4000000:
+        if int(jackpot_amount.replace(',', '')) < 4000000:
             return
         message_parts.append(f"💰 Jackpot: {jackpot_amount}")
     else:

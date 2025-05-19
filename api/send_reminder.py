@@ -24,6 +24,7 @@ client = MongoClient(MONGODB_URI)
 db = client["NousBot"]
 collection = db["Subscriptions"]
 collection2 = db["UserConfig"]
+collection3 = db["ToToWinnings"]
 
 sg_timezone = timezone("Asia/Singapore")
 bot = telegram.Bot(token=TOKEN)
@@ -82,7 +83,7 @@ async def toto_reminder():
 
 
 async def toto_check_winnings():
-    result = collection.find({"Date": current_date_str})
+    result = collection3.find({"Date": current_date_str})
     for doc in result:
         total_winnings = 0
         winning_sets = []
@@ -98,7 +99,7 @@ async def toto_check_winnings():
         # Step 3: Prepare payload
         calculate_url = "https://www.singaporepools.com.sg/_layouts/15/TotoApplication/TotoCommonPage.aspx/CalculatePrizeForTOTO"
 
-        lst = json.loads(doc["Bets"])
+        lst = doc["Bets"]
         for item in lst:
             numbers = ",".join(map(str, item))
 

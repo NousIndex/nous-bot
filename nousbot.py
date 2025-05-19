@@ -11,7 +11,8 @@ from telegram.ext import (
 from pymongo import MongoClient
 import ast
 import os
-from datetime import datetime, timedelta, timezone
+from pytz import timezone
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 # Load variables from .env file
@@ -82,14 +83,9 @@ async def get_subscriptions(field_name):
     return doc.get(field_name) if doc else "[]"
 
 
-def get_next_date_str(start_date=None):
-    if start_date is None:
-        sg_timezone = timezone("Asia/Singapore")
-        start_date = datetime.now(sg_timezone)
-    else:
-        # Ensure datetime object and use timezone +8
-        start_date = datetime.combine(start_date, datetime.min.time())
-        start_date = start_date.replace(tzinfo=timezone(timedelta(hours=8)))
+def get_next_date_str():
+    sg_timezone = timezone("Asia/Singapore")
+    start_date = datetime.now(sg_timezone)
 
     weekday = start_date.weekday()  # Monday = 0, Sunday = 6
     tuesday = 1

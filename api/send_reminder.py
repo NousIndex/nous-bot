@@ -62,6 +62,8 @@ async def toto_reminder():
     message_parts = ["<b>ToTo Reminder:</b>"]
 
     if jackpot_amount:
+        print(jackpot_amount)
+        print(int(jackpot_amount.replace(",", "")))
         if int(jackpot_amount.replace(",", "")) < 4000000:
             return
         message_parts.append(f"💰 Jackpot: {jackpot_amount}")
@@ -136,7 +138,7 @@ async def toto_check_winnings():
         new_date = now_sgt + timedelta(days=-1)
         new_date_str = new_date.strftime("%Y-%m-%d")
         message_parts = ["<b>ToTo Winnings for {}:</b>".format(new_date_str)]
-        message_parts.append(f"💰 Winnings: {total_winnings}")
+        message_parts.append(f"💰 Winnings: ${total_winnings}")
         if winning_sets:
             message_parts.append(f"🎉 Winning Sets: {'\n'.join(winning_sets)}")
         final_message = "\n".join(message_parts)

@@ -63,8 +63,11 @@ async def toto_reminder():
 
     if jackpot_amount:
         print(jackpot_amount)
-        print(int(jackpot_amount.replace(",", "")))
-        if int(jackpot_amount.replace(",", "")) < 4000000:
+        print(int(jackpot_amount.replace("$", "").replace(",", "").replace(" est", "")))
+        if (
+            int(jackpot_amount.replace("$", "").replace(",", "").replace(" est", ""))
+            < 4000000
+        ):
             return
         message_parts.append(f"💰 Jackpot: {jackpot_amount}")
     else:
